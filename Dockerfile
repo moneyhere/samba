@@ -1,8 +1,11 @@
 FROM alpine
 MAINTAINER David Personette <dperson@gmail.com>
 
+COPY samba.sh /usr/bin/
+
 # Install samba
-RUN sed -i 's/https/http/' /etc/apk/repositories && \
+RUN chmod +x /usr/bin/samba.sh && \
+    sed -i 's/https/http/' /etc/apk/repositories && \
     apk --no-cache --no-progress upgrade && \
     apk --no-cache --no-progress add bash samba shadow tini tzdata && \
     addgroup -S smb && \
@@ -56,7 +59,7 @@ RUN sed -i 's/https/http/' /etc/apk/repositories && \
     echo '' >>$file && \
     rm -rf /tmp/*
 
-COPY samba.sh /usr/bin/
+
 
 EXPOSE 137/udp 138/udp 139 445
 
